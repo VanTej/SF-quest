@@ -1,0 +1,21 @@
+$primary: #e13b85;
+$secondary: #ae64ac;
+$dark: #464545;
+$light: #feffc0;
+
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "dark": $dark,
+    "light": $light,
+);
+
+body {
+    background-color: white;
+}
+
+.navbar img {
+    height: 50px;;
+}
+
+@import "~bootstrap/scss/bootstrap";
