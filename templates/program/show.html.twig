@@ -1,9 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Wild Series{% endblock %}
+{% block title %}Wild Series
+{% endblock %}
 
 {% block body %}
 
-	<h1>Program {{ id }}</h1>
+	<h1>Program
+		{{ id }}</h1>
+
+	<ul>
+		<li>
+			<h2>Nom :
+				{{ program.title }}</h2>
+			<h3>Catégorie :
+				{{ program.category.name }}</h3>
+			<p>Synopsis :
+				{{ program.synopsis }}</p>
+		</li>
+	</ul>
 
 {% endblock %}
