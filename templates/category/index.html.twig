@@ -6,7 +6,5 @@
 		<ul>
 			<li> <a href="{{ path('category_show', {'categoryName': category.name}) }}">{{ category.name }} </a></li>
 		</ul>
-	{% else %}
-		Aucune série trouvée.
 	{% endfor %}
 {% endblock %}

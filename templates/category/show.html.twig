@@ -6,8 +6,13 @@
 
 	{% for program in programs %}
 		<ul>
-			<li> <a href="{{ path('program_show', {'id': program.id}) }}">{{ program.title }}</a></li>
+			<li>
+				<a href="{{ path('program_show', {'id': program.id}) }}">{{ program.title }}</a>
+			</li>
 		</ul>
+	{% else %}
+		Aucune série trouvée.
 	{% endfor %}
+
 
 {% endblock %}
