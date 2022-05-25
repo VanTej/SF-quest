@@ -26,4 +26,9 @@ h1 {
     height: 50px;;
 }
 
+.navbar-toggler {
+    background-color: $primary;
+    fill: $dark;
+}
+
 @import "~bootstrap/scss/bootstrap";

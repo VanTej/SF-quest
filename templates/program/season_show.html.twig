@@ -8,21 +8,22 @@
 		<h1 class="my-5">{{ program.title }}
 			- Saison
 			{{ season.number }}</h1>
-		<div class="row justify-content-center">
-			<div class="card col-lg-6 bg-dark border border-primary opacity-75 p-2">
-				<h3 class="card-subtitle h5">Sortie en
-					{{ season.year }}</h3>
+		<div class="d-flex flex-column align-items-center">
+			<div class="card col-lg-6 col-md-10 bg-dark border-primary opacity-75 p-2 align-items-center">
+				<h2 class="card-subtitle align-self-end fs-5">Sortie en
+					{{ season.year }}</h2>
 				<p class="card-body">{{ season.description }}</p>
-				<p>Liste des épisodes :</p>
-				<ul>
-					{% for episode in episodes %}
-						<li>
-							{{ episode.number }} - {{ episode.title }}
-						</li>
-					{% endfor %}
-				</ul>
+				<div class="row container justify-content-center">
+				{% for episode in episodes %}
+					<div class="card col-lg-5 bg-dark border border-primary opacity-75 m-2 p-2">
+						Episode {{ episode.number }}
+						<h3 class="fs-5">{{ episode.title }}</h3>
+						<p>{{ episode.synopsis | u.truncate(15, '...', false)}}</p>
+					</div>
+				{% endfor %}
+				</div>
 			</div>
-			<a class="col-lg-6 text-end m-5 p-0" href="{{ path('program_show', {'id': program.id}) }}">Retour à la liste des saisons</a>
+			<a class="m-5 p-0" href="{{ path('program_show', {'id': program.id}) }}">Retour à la liste des saisons</a>
 		</div>
 	</main>
 {% endblock %}
