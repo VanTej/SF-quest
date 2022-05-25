@@ -5,6 +5,19 @@
 
 {% block body %}
 	<main>
-		<h1>Bienvenue !</h1>
+		<h1 class="m-5">Bienvenue !</h1>
+		<h2 class="m-5 text-secondary text-center">Voir, revoir ou découvrir à volonté...</h2>
+		<div class="row justify-content-center">
+			<div class="card col-lg-2 bg-dark border border-primary opacity-75 p-2 m-2">
+				<h3 class="card-subtitle text-center">{{ nbPrograms }} séries</h3>
+			</div>
+			<div class="card col-lg-2 bg-dark border border-primary opacity-75 p-2 m-2">
+				<h3 class="card-subtitle text-center">{{ nbSeasons }} saisons</h3>
+			</div>
+			<div class="card col-lg-2 bg-dark border border-primary opacity-75 p-2 m-2">
+				<h3 class="card-subtitle text-center">{{ nbEpisodes }} épisodes</h3>
+			</div>
+		</div>
+
 	</main>
 {% endblock %}
