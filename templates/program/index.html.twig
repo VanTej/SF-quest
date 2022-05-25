@@ -4,25 +4,27 @@
 {% endblock %}
 
 {% block body %}
-	<main class="d-flex flex-column">
+	<main>
 		<h1 class="my-5">
 			{{ website }}
 		</h1>
-		<div class="row justify-content-center">
+		<div class="row container-fluid justify-content-center">
 			{% for program in programs %}
 				<div class="card col-lg-3 bg-dark border border-primary opacity-75 m-3 p-2">
-					<h2 class="card-title text-white text-center">
-						{{ program.title }}</h2>
-					<h3 class="h5">
-						{{ program.category.name }}</h3>
-					<p class="card-text">Synopsis :
-						{{ program.synopsis }}</p>
-					<a class="btn btn-primary text-light px-3" href="{{ path('program_show', {'id': program.id}) }}">Voir</a>
+					<div class="card-body h-100">
+						<h2 class="card-title text-white text-center">
+							{{ program.title }}</h2>
+						<h3 class="h5">
+							{{ program.category.name }}</h3>
+						<p class="card-text flex-grow-1">Synopsis :
+							{{ program.synopsis }}</p>
+					</div>
+						<a class="btn btn-primary text-light px-3" href="{{ path('program_show', {'id': program.id}) }}">Voir</a>
 				</div>
 			{% else %}
 				Aucune série trouvée.
 			{% endfor %}
+			<a class="col-lg-9 text-end p-0" href="{{ path('app_index') }}">Retour à l'accueil</a>
 		</div>
-		<a class="align-self-end justify-self-end mx-5" href="{{ path('app_index') }}">Retour à l'accueil</a>
 	</main>
 {% endblock %}

@@ -25,28 +25,28 @@ Class ProgramController extends AbstractController
     }
 
     #[Route('/{id<\d+>}', methods: ['GET'], name: 'show')]
-    public function show(int $id, ProgramRepository $programRepository, SeasonRepository $seasonRepository): Response
+    public function show(int $id, ProgramRepository $programRepository): Response
     {
         $program = $programRepository->findOneBy(['id' => $id]);
-        $seasons = $seasonRepository->findByProgram($program);
+        $seasons = $program->getSeasons();
         return $this->render('program/show.html.twig', [
             'id' => $id,
             'program' => $program,
             'seasons' => $seasons,
-         ]);
+        ]);
     }
 
     #[Route('/{programId<\d+>}/season/{seasonId<\d+>}', methods: ['GET'], name: 'season_show')]
-    public function showSeason(int $programId, int $seasonId, ProgramRepository $programRepository, SeasonRepository $seasonRepository, EpisodeRepository $episodeRepository): Response
+    public function showSeason(int $programId, int $seasonId, ProgramRepository $programRepository, SeasonRepository $seasonRepository): Response
     {
         $program = $programRepository->findOneBy(['id' => $programId]);
         $season = $seasonRepository->findOneBy(['program' => $program, 'id' => $seasonId]);
-        $episodes = $episodeRepository->findBySeason($season);
+        $episodes = $season->getEpisodes();
         return $this->render('program/season_show.html.twig', [
             'program' => $program,
             'season' => $season,
             'episodes' => $episodes,
-         ]);
+        ]);
     }
     
 }
