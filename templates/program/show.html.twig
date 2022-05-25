@@ -4,19 +4,12 @@
 {% endblock %}
 
 {% block body %}
+	<main>
+		<h1 class="my-5">{{ program.title }}</h1>
+		<h2 class="h5">Catégorie :
+			{{ program.category.name }}</h2>
+		<p>Synopsis :
+			{{ program.synopsis }}</p>
 
-	<h1>Program
-		{{ id }}</h1>
-
-	<ul>
-		<li>
-			<h2>Nom :
-				{{ program.title }}</h2>
-			<h3>Catégorie :
-				{{ program.category.name }}</h3>
-			<p>Synopsis :
-				{{ program.synopsis }}</p>
-		</li>
-	</ul>
-
+	</main>
 {% endblock %}

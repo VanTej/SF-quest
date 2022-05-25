@@ -3,6 +3,8 @@ $secondary: #ae64ac;
 $dark: #464545;
 $light: #feffc0;
 
+$body-color: white;
+
 $theme-colors: (
     "primary": $primary,
     "secondary": $secondary,
@@ -11,7 +13,13 @@ $theme-colors: (
 );
 
 body {
-    background-color: white;
+    background: url('../images/bg-texture.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1 {
+    text-align: center;
 }
 
 .navbar img {

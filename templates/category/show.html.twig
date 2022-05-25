@@ -1,18 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-	<h1>Ma catégorie {{ category.name }}</h1>
-
-	{% for program in programs %}
-		<ul>
-			<li>
-				<a href="{{ path('program_show', {'id': program.id}) }}">{{ program.title }}</a>
-			</li>
-		</ul>
-	{% else %}
-		Aucune série trouvée.
-	{% endfor %}
-
-
+	<main>
+		<h1>{{ category.name }}</h1>
+		<div class="row justify-content-center my-5">
+			{% for program in programs %}
+				<div class="card col-lg-3 bg-dark border border-primary opacity-75 m-3 p-2">
+					<h2 class="card-title text-white text-center">
+						{{ program.title }}</h2>
+					<h3 class="h5">
+						{{ program.category.name }}</h3>
+					<p class="card-text">Synopsis :
+						{{ program.synopsis }}</p>
+					<a class="btn btn-primary text-light px-3" href="{{ path('program_show', {'id': program.id}) }}">Voir</a>
+				</div>
+			{% else %}
+				Aucune série trouvée.
+			{% endfor %}
+		</div>
+	</main>
 {% endblock %}
