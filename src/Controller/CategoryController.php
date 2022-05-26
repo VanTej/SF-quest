@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Repository\ProgramRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,10 +21,9 @@ class CategoryController extends AbstractController
             'categories' => $categories,
         ]);
     }
-    #[Route('/{categoryName}', methods: ['GET'], name: 'show')]
-    public function show(string $categoryName, CategoryRepository $categoryRepository, ProgramRepository $programRepository)
+    #[Route('/{name}', methods: ['GET'], name: 'show')]
+    public function show(Category $category, ProgramRepository $programRepository)
     {
-        $category = $categoryRepository->findOneByName($categoryName);
         if (!$category) {
             throw $this->createNotFoundException('La catégorie n\'existe pas');
         }

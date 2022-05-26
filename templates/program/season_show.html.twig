@@ -13,12 +13,13 @@
 				<h2 class="card-subtitle align-self-end fs-5">Sortie en
 					{{ season.year }}</h2>
 				<p class="card-body">{{ season.description }}</p>
-				<div class="row container justify-content-center">
+				<div class="row container justify-content-center h-100">
 				{% for episode in episodes %}
-					<div class="card col-lg-5 bg-dark border border-primary opacity-75 m-2 p-2">
+					<div class="card col-lg-5 bg-dark border border-primary m-2 p-2 flex-grow-1 justify-content-between">
 						Episode {{ episode.number }}
 						<h3 class="fs-5">{{ episode.title }}</h3>
-						<p>{{ episode.synopsis | u.truncate(15, '...', false)}}</p>
+						<p class="">{{ episode.synopsis | u.truncate(25, '...', false)}}</p>
+						<a class="btn btn-secondary text-light px-3 m-3" href="{{ path('program_episode_show', {'programId': program.id, 'seasonId': season.id, 'episodeId': episode.id}) }}">Voir</a>
 					</div>
 				{% endfor %}
 				</div>
