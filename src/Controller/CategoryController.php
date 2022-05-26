@@ -3,12 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Repository\CategoryRepository;
+use App\Form\CategoryType;
 use App\Repository\ProgramRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/category', name: 'category_')]
 class CategoryController extends AbstractController
@@ -21,6 +22,25 @@ class CategoryController extends AbstractController
             'categories' => $categories,
         ]);
     }
+
+    #[Route('/new', name: 'new')]
+    public function new(Request $request, CategoryRepository $categoryRepository): Response
+    {
+        $category = new Category();
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $categoryRepository->add($category, true);
+
+            return $this->redirectToRoute('category_index');
+        }
+
+        return $this->renderForm('category/new.html.twig', [
+            'formCategory' => $form,
+        ]);
+    }
+
     #[Route('/{name}', methods: ['GET'], name: 'show')]
     public function show(Category $category, ProgramRepository $programRepository)
     {

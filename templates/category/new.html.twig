@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<main>
+		<h1 class="my-5">Nouvelle catégorie</h1>
+		<div class="container col-lg-6">
+			{{ form_start(formCategory) }}
+			{{ form_row(formCategory.name, {'attr': {'placeholder': 'Nom de la nouvelle catégorie'}}) }}
+			<button class="btn btn-primary text-white px-3" type="submit">Ajouter</button>
+			{{ form_end(formCategory) }}
+		</div>
+	</main>
+{% endblock %}

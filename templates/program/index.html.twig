@@ -8,22 +8,25 @@
 		<h1 class="my-5">
 			{{ website }}
 		</h1>
-		<div class="row justify-content-center mx-sm-3">
-			{% for program in programs %}
-				<div class="card col-lg-3 bg-dark border border-primary opacity-75 m-2 p-2">
-					<div class="card-body h-100">
-						<h2 class="card-title text-white text-center">
-							{{ program.title }}</h2>
-						<h3 class="h5 my-3">
-							{{ program.category.name }}</h3>
-						<p class="card-text flex-grow-1">Synopsis :
-							{{ program.synopsis }}</p>
+		<div class="d-flex flex-column align-items-center">
+			<a class="btn btn-secondary text-white px-3 mb-5 fs-6" href="{{ path('program_new') }}">Ajouter une série</a>
+			<div class="row justify-content-center mx-sm-3">
+				{% for program in programs %}
+					<div class="card col-lg-3 bg-dark border border-primary opacity-75 m-2 p-2">
+						<div class="card-body h-100">
+							<h2 class="card-title text-white text-center">
+								{{ program.title }}</h2>
+							<h3 class="h5 my-3">
+								{{ program.category.name }}</h3>
+							<p class="card-text flex-grow-1">Synopsis :
+								{{ program.synopsis }}</p>
+						</div>
+						<a class="btn btn-primary text-light px-3" href="{{ path('program_show', {'id': program.id}) }}">Voir</a>
 					</div>
-						<a class="btn btn-secondary text-light px-3" href="{{ path('program_show', {'id': program.id}) }}">Voir</a>
-				</div>
-			{% else %}
-				Aucune série trouvée.
-			{% endfor %}
+				{% else %}
+					Aucune série trouvée.
+				{% endfor %}
+			</div>
 		</div>
 	</main>
 {% endblock %}

@@ -18,6 +18,10 @@ body {
     background-size: cover;
 }
 
+#category_name, #input-dark, #program_title, #program_synopsis, #program_poster, #program_category {
+    color: $dark;
+}
+
 h1 {
     text-align: center;
 }
