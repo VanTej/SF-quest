@@ -23,7 +23,7 @@ class Episode
     private $synopsis;
 
     #[ORM\ManyToOne(targetEntity: Season::class, inversedBy: 'episodes')]
-    private $season;
+    private Season $season;
 
     public function getId(): ?int
     {

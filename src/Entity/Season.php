@@ -26,10 +26,10 @@ class Season
 
     #[ORM\ManyToOne(targetEntity: Program::class, inversedBy: 'seasons')]
     #[ORM\JoinColumn(nullable: false)]
-    private $program;
+    private Program $program;
 
     #[ORM\OneToMany(mappedBy: 'season', targetEntity: Episode::class)]
-    private $episodes;
+    private Collection $episodes;
 
     public function __construct()
     {

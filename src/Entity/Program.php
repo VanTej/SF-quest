@@ -25,10 +25,10 @@ class Program
     private $poster;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'programs')]
-    private $category;
+    private Category $category;
 
     #[ORM\OneToMany(mappedBy: 'program', targetEntity: Season::class)]
-    private $seasons;
+    private Collection $seasons;
 
     public function __construct()
     {
