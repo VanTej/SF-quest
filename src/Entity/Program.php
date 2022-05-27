@@ -2,34 +2,52 @@
 
 namespace App\Entity;
 
-use App\Repository\ProgramRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProgramRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
+#[UniqueEntity('title', message: 'Ce titre existe déjà')]
+#[Assert\EnableAutoMapping]
+
 class Program
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le nom de la série est trop long, il ne devrait pas dépasser {{ limit }} caractères',
+    )]
+    #[Assert\Regex('/plus belle la vie/i', match: false, message: 'Cette série est illégale')]
     private $title;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
     private $synopsis;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le nom de l\'affiche est trop long, il ne devrait pas dépasser {{ limit }} caractères',
+    )]
     private $poster;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'programs')]
+    #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
     private Category $category;
 
     #[ORM\OneToMany(mappedBy: 'program', targetEntity: Season::class)]
     private Collection $seasons;
-    
+
     #[ORM\OneToMany(mappedBy: 'program', targetEntity: Episode::class)]
     private Collection $episodes;
 
