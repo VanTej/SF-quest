@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Episode index
+{% endblock %}
+
+{% block body %}
+	<main>
+		<h1 class="my-5">Episodes</h1>
+		<div class="d-flex justify-content-center">
+			<a class="btn btn-secondary text-white" href="{{ path('app_episode_new') }}">Ajouter un épisode</a>
+		</div>
+		<div class="container">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Série</th>
+						<th>Saison</th>
+						<th>Titre</th>
+						<th>Numéro</th>
+						<th>Synopsis</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for episode in episodes %}
+						<tr>
+							<td>{{ episode.season.number }}</td>
+							<td>{{ episode.season.program.title }}</td>
+							<td>{{ episode.title }}</td>
+							<td>{{ episode.number }}</td>
+							<td>{{ episode.synopsis }}</td>
+							<td>
+								<div class="d-flex flex-column">
+									<a class="btn btn-secondary text-white w-100 mb-2" href="{{ path('app_episode_show', {'id': episode.id}) }}">Voir</a>
+									<a class="btn btn-secondary text-white w-100 mb-2" href="{{ path('app_episode_edit', {'id': episode.id}) }}">Modifier</a>
+									{{ include('episode/_delete_form.html.twig') }}
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5">Aucun épisode trouvé</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</main>
+
+{% endblock %}

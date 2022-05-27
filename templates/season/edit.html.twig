@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Season
+{% endblock %}
+
+{% block body %}
+	<h1 class="my-5">Modifier une saison</h1>
+
+	<div class="container d-flex flex-column col-lg-6">
+
+		{{ include('season/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+		<a class="align-self-center mt-5" href="{{ path('app_season_index') }}">Retour à la liste des saisons</a>
+	</div>
+
+{% endblock %}

@@ -25,6 +25,9 @@ class Episode
     #[ORM\ManyToOne(targetEntity: Season::class, inversedBy: 'episodes')]
     private Season $season;
 
+    #[ORM\ManyToOne(targetEntity: Program::class, inversedBy: 'episodes')]
+    private Program $program;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class Episode
     public function setSeason(?Season $season): self
     {
         $this->season = $season;
+
+        return $this;
+    }
+
+    public function getProgram()
+    {
+        return $this->program;
+    }
+
+    public function setProgram($program)
+    {
+        $this->program = $program;
 
         return $this;
     }

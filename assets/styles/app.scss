@@ -4,6 +4,8 @@ $dark: #464545;
 $light: #feffc0;
 
 $body-color: white;
+$input-color: $dark;
+$input-group-addon-color: $dark;
 
 $theme-colors: (
     "primary": $primary,
@@ -18,9 +20,6 @@ body {
     background-size: cover;
 }
 
-#category_name, #input-dark, #program_title, #program_synopsis, #program_poster, #program_category {
-    color: $dark;
-}
 
 h1 {
     text-align: center;
