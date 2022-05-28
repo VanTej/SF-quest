@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wild Series
+{% endblock %}
+
+{% block body %}
+	<main>
+		<h1 class="my-5">{{ actor.name }}</h1>
+
+		<div class="d-flex flex-column align-items-center">
+			<div class="card col-lg-6 bg-dark border border-primary opacity-75 p-2">
+
+				<div class="d-flex justify-content-center">
+					{% for program in programs %}
+						<a class="btn btn-secondary text-light px-3 m-3" href="{{ path('program_show', {'id': program.id}) }}">
+							{{ program.title }}</a>
+					{% endfor %}
+				</div>
+			</div>
+			<a class="m-5 p-0" href="{{ path('actor_index')}}">Retour à la liste des acteurs</a>
+		</div>
+	</main>
+{% endblock %}

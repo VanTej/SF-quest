@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wild Series
+{% endblock %}
+
+{% block body %}
+	<main>
+		<h1 class="my-5">Acteurs</h1>
+		<div class="d-flex flex-column align-items-center">
+			<div class="row justify-content-center mx-sm-3">
+				{% for actor in actors %}
+					<div class="card col-lg-3 bg-dark border border-primary opacity-75 m-2 p-2">
+						<div class="card-body h-100">
+							<h2 class="card-title text-white text-center">
+								{{ actor.name }}</h2>
+						</div>
+						<a class="btn btn-primary text-light px-3" href="{{ path('actor_show', {'id': actor.id}) }}">Filmographie</a>
+					</div>
+				{% else %}
+					Aucun acteur trouvé.
+				{% endfor %}
+			</div>
+		</div>
+	</main>
+{% endblock %}
