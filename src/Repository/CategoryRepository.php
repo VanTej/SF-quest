@@ -39,6 +39,16 @@ class CategoryRepository extends ServiceEntityRepository
         }
     }
 
+       public function findAllAsc(): array
+   {
+       return $this->createQueryBuilder('c')
+           ->orderBy('c.name', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */

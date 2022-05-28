@@ -7,6 +7,7 @@
 	<main>
 		<h1 class="my-5">Acteurs</h1>
 		<div class="d-flex flex-column align-items-center">
+			<a class="btn btn-secondary text-white px-3 mb-5 fs-6" href="{{ path('actor_new') }}">Ajouter un acteur</a>
 			<div class="row justify-content-center mx-sm-3">
 				{% for actor in actors %}
 					<div class="card col-lg-3 bg-dark border border-primary opacity-75 m-2 p-2">

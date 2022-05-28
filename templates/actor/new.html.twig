@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<main>
+		<h1 class="my-5">Nouvel acteur</h1>
+		<div class="container col-lg-6">
+			{{ form_start(formActor, {'attr': {'novalidate': 'novalidate'}}) }}
+			{{ form_widget(formActor) }}
+			<button class="btn btn-primary text-white px-3" type="submit">Ajouter</button>
+			{{ form_end(formActor) }}
+		</div>
+	</main>
+{% endblock %}
