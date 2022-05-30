@@ -12,7 +12,7 @@
 
 				<div class="d-flex justify-content-center">
 					{% for program in programs %}
-						<a class="btn btn-secondary text-light px-3 m-3" href="{{ path('program_show', {'id': program.id}) }}">
+						<a class="btn btn-secondary text-light px-3 m-3" href="{{ path('program_show', {'slug': program.slug}) }}">
 							{{ program.title }}</a>
 					{% endfor %}
 				</div>

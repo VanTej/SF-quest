@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinTable;
 use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
 #[UniqueEntity('title', message: 'Ce titre existe déjà')]
-#[Assert\EnableAutoMapping]
+
 class Program
 {
     #[ORM\Id]
@@ -52,6 +51,10 @@ class Program
 
     #[ORM\ManyToMany(targetEntity: Actor::class, mappedBy: 'programs')]
     private $actors;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Blank]
+    private $slug;
 
     public function __construct()
     {
@@ -196,6 +199,18 @@ class Program
         if ($this->actors->removeElement($actor)) {
             $actor->removeProgram($this);
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

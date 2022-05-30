@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Program;
+use App\Service\Slugify;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -17,11 +18,17 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         ['title' => 'Sex education', 'synopsis' => 'Des lycéens anglais découvrent le sexe sans tabou, ou presque !', 'category' => 'category_Comédie'],
     ];
 
+    public function __construct(private Slugify $slugify)
+    {
+    }
+
     public function load(ObjectManager $manager): void
     {
         foreach (self::SERIES as $serie) {
             $program = new Program();
             $program->setTitle($serie['title']);
+            $slug = $this->slugify->generate($serie['title']);
+            $program->setSlug($slug);
             $program->setSynopsis($serie['synopsis']);
             $program->setCategory($this->getReference($serie['category']));
             $this->addReference($serie['title'], $program);

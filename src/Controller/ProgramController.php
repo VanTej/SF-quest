@@ -7,6 +7,7 @@ use App\Entity\Episode;
 use App\Entity\Program;
 use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
+use App\Service\Slugify;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,14 +29,16 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'new')]
-    public function new(Request $request, ProgramRepository $programRepository): Response
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
+    public function new(Request $request, ProgramRepository $programRepository, Slugify $slugify): Response
     {
         $program = new Program();
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            $slug = $slugify->generate($program->getTitle());
+            $program->setSlug($slug);
             $programRepository->add($program, true);
 
             return $this->redirectToRoute('program_index');
@@ -46,7 +49,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/{id<\d+>}', methods: ['GET'], name: 'show')]
+    #[Route('/{slug}', methods: ['GET'], name: 'show')]
     public function show(Program $program): Response
     {
         $seasons = $program->getSeasons();
@@ -60,7 +63,7 @@ class ProgramController extends AbstractController
 
     #[Route('/{programId<\d+>}/season/{seasonId<\d+>}', methods: ['GET'], name: 'season_show')]
     #[Entity('program', options: ['id' => 'programId'])]
-    #[Entity('comment', options: ['id' => 'seasonId'])]
+    #[Entity('season', options: ['id' => 'seasonId'])]
     public function showSeason(Program $program, Season $season): Response
     {
         $episodes = $season->getEpisodes();

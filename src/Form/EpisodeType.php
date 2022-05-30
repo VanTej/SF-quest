@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Season;
 use App\Entity\Episode;
+use App\Entity\Program;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -11,13 +12,22 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class EpisodeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('program', null, [
+            ->add('program', EntityType::class, [
+                'class' => Program::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.title', 'ASC');
+                },
+                'multiple' => false,
+                'expanded' => true,
+                'by_reference' => false,
                 'choice_label' => 'title',
                 'label' => 'Série',
             ])
@@ -25,17 +35,22 @@ class EpisodeType extends AbstractType
                 'class' => Season::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
+                        ->join('s.program', 'p')
                         ->orderBy('s.number', 'ASC');
                 },
+                'multiple' => false,
+                'expanded' => true,
+                'by_reference' => false,
                 'choice_label' => 'number',
+                'label' => 'Numéro de la saison',
             ])
             ->add('number', IntegerType::class, [
-                'label' => 'Numéro',
+                'label' => 'Numéro de l\'épisode',
             ])
             ->add('title', TextType::class, [
                 'label' => 'Titre',
             ])
-            ->add('synopsis', TextType::class, [
+            ->add('synopsis', TextareaType::class, [
                 'label' => 'Synopsis',
             ]);
     }

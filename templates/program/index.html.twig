@@ -21,7 +21,7 @@
 							<p class="card-text flex-grow-1">Synopsis :
 								{{ program.synopsis }}</p>
 						</div>
-						<a class="btn btn-primary text-light px-3" href="{{ path('program_show', {'id': program.id}) }}">Voir</a>
+						<a class="btn btn-primary text-light px-3" href="{{ path('program_show', {'slug': program.slug}) }}">Voir</a>
 					</div>
 				{% else %}
 					Aucune série trouvée.
