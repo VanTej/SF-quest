@@ -36,7 +36,7 @@ class EpisodeType extends AbstractType
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
                         ->join('s.program', 'p')
-                        ->orderBy('s.number', 'ASC');
+                        ->orderBy('p.title', 'ASC');
                 },
                 'multiple' => false,
                 'expanded' => true,

@@ -1,0 +1,9 @@
+{% extends "baseEmail.html.twig" %}
+{% block title %}
+    Nouvel épisode
+{% endblock %}
+{% block body %}
+    <a class="btn btn-secondary text-white w-100 mb-2" href="{{ path('app_episode_show', {'slug': episode.slug}) }}"><h1>Nouvel épisode {{ episode.number }}/{{ episode.title }} crée</h1></a>
+    <p>Bonjour, la série {{ episode.program.title }} a un nouvel épisode sur Wild Series</p>
+    <p>Synopsis : {{episode.synopsis }}
+{% endblock %}
