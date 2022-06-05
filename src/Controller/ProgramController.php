@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Season;
 use App\Entity\Episode;
 use App\Entity\Program;
+use App\Form\CommentType;
 use App\Service\Slugify;
 use App\Form\ProgramType;
+use App\Repository\CommentRepository;
 use Symfony\Component\Mime\Email;
 use App\Repository\ProgramRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +21,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
-
 {
     #[Route('/', name: 'index')]
     public function index(ProgramRepository $programRepository): Response
@@ -37,7 +39,7 @@ class ProgramController extends AbstractController
         $program = new Program();
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = $slugify->generate($program->getTitle());
             $program->setSlug($slug);
@@ -51,7 +53,7 @@ class ProgramController extends AbstractController
                 ]));
 
 
-        $mailer->send($email);
+            $mailer->send($email);
 
             return $this->redirectToRoute('program_index');
         }
@@ -86,16 +88,29 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/{programId<\d+>}/season/{seasonId<\d+>}/episode/{episodeId<\d+>}', methods: ['GET'], name: 'episode_show')]
+    #[Route('/{programId<\d+>}/season/{seasonId<\d+>}/episode/{episodeId<\d+>}', methods: ['GET', 'POST'], name: 'episode_show')]
     #[Entity('program', options: ['id' => 'programId'])]
     #[Entity('season', options: ['id' => 'seasonId'])]
     #[Entity('episode', options: ['id' => 'episodeId'])]
-    public function showEpisode(Program $program, Season $season, Episode $episode): Response
+    public function showEpisode(Program $program, Season $season, Episode $episode, CommentRepository $commentRepository, Request $request): Response
     {
+        $comments  = $episode->getComments();
+        $user = $this->getUser();
+        $comment = new Comment($episode, $user);
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $commentRepository->add($comment, true);
+
+            return $this->redirectToRoute('program_episode_show', ['programId' => $program->getId(), 'seasonId' => $season->getId(), 'episodeId' => $episode->getId()], Response::HTTP_SEE_OTHER);
+        }
         return $this->render('program/episode_show.html.twig', [
             'program' => $program,
             'season' => $season,
             'episode' => $episode,
+            'comments' => $comments,
+            'form' => $form->createView(),
         ]);
     }
 }

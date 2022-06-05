@@ -34,4 +34,8 @@ h1 {
     fill: $dark;
 }
 
+.hidden {
+    display: none;
+}
+
 @import "~bootstrap/scss/bootstrap";

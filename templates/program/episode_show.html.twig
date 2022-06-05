@@ -5,7 +5,10 @@
 
 {% block body %}
 	<main>
-		<h1 class="my-5">{{ program.title }} S{{ season.number }} E{{ episode.number }} </h1>
+		<h1 class="my-5">{{ program.title }}
+			S{{ season.number }}
+			E{{ episode.number }}
+		</h1>
 
 		<div class="d-flex flex-column align-items-center justify-content-between">
 			<div class="card col-lg-6 bg-dark border border-primary opacity-75 p-2">
@@ -13,6 +16,37 @@
 				<p>Synopsis :
 					{{ episode.synopsis }}</p>
 			</div>
+			<div class="col-lg-6">
+				{% if comments is empty %}
+					<h3 class="mt-5 text-center">Aucun commentaire pour cet épisode</h3>
+				{% else %}
+					{% if comments.count == 1 %}
+						<h3 class="mt-5 text-center">Commentaire</h3>
+					{% else %}
+
+						<h3 class="mt-5 text-center">Commentaires</h3>
+					{% endif %}
+					<div class="row gap-2 my-3 container d-flex flex-column align-items-center">
+						{% for comment in comments %}
+							<div class="card col-lg-10 bg-dark border border-secondary opacity-75">
+								<p class="text-muted p-0 m-0">{{ comment.author }}</p>
+								<p class="card-text p-0">{{ comment.rate}}/5 - {{ comment.comment }}</p>
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+
+				<div class="my-3">
+					{% if app.user %}
+						<a class="btn btn-secondary text-white" id="formShow" href="#formHidden">Laisser un commentaire</a>
+					{% endif %}
+				</div>
+
+				<div class="hidden" id="formHidden">
+					{% include "comment/_form.html.twig" %}
+				</div>
+
 			<a class="m-5 p-0" href="{{ path('program_season_show', {'programId': program.id, 'seasonId': season.id}) }}">Retour à la liste des épisodes</a>
 		</div>
 	</main>
