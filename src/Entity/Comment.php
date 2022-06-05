@@ -15,12 +15,10 @@ class Comment
     private $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $author;
+    private ?User $author;
 
     #[ORM\ManyToOne(targetEntity: Episode::class, inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $episode;
+    private ?Episode $episode;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
@@ -31,7 +29,7 @@ class Comment
     #[Assert\Regex('/[0-5]{1}/', message: 'La note est sur 5')]
     private $rate;
 
-    public function __construct(Episode $episode, User $user)
+    public function __construct(?Episode $episode, ?User $user)
     {
         $this->episode = $episode;
         $this->author = $user;

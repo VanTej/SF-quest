@@ -94,17 +94,19 @@ class ProgramController extends AbstractController
     #[Entity('episode', options: ['id' => 'episodeId'])]
     public function showEpisode(Program $program, Season $season, Episode $episode, CommentRepository $commentRepository, Request $request): Response
     {
-        $comments  = $episode->getComments();
+        $comments = $episode->getComments();
         $user = $this->getUser();
+
         $comment = new Comment($episode, $user);
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $commentRepository->add($comment, true);
 
             return $this->redirectToRoute('program_episode_show', ['programId' => $program->getId(), 'seasonId' => $season->getId(), 'episodeId' => $episode->getId()], Response::HTTP_SEE_OTHER);
         }
+
         return $this->render('program/episode_show.html.twig', [
             'program' => $program,
             'season' => $season,

@@ -34,6 +34,7 @@ class Episode
     private $slug;
 
     #[ORM\OneToMany(mappedBy: 'episode', targetEntity: Comment::class)]
+    #[ORM\OrderBy(["id" => "DESC"])]
     private Collection $comments;
 
     public function __construct()
