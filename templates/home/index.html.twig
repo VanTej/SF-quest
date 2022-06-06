@@ -6,18 +6,37 @@
 {% block body %}
 	<main>
 		<h1 class="m-5">Bienvenue !</h1>
-		<h2 class="m-5 text-secondary text-center">Voir, revoir ou découvrir à volonté...</h2>
+		<h2 class="text-secondary text-center">Voir, revoir ou découvrir à volonté...</h2>
 		<div class="row justify-content-center">
-			<div class="card col-lg-2 bg-dark border border-primary opacity-75 p-2 m-2">
-				<h3 class="card-subtitle text-center">{{ nbPrograms }} séries</h3>
+			<div class="card col-lg-2 bg-dark border border-primary opacity-75 p-2 mx-2">
+				<h3 class="card-subtitle text-center">{{ nbPrograms }}
+					séries</h3>
 			</div>
-			<div class="card col-lg-2 bg-dark border border-primary opacity-75 p-2 m-2">
-				<h3 class="card-subtitle text-center">{{ nbSeasons }} saisons</h3>
+			<div class="card col-lg-2 bg-dark border border-primary opacity-75 p-2 mx-2">
+				<h3 class="card-subtitle text-center">{{ nbSeasons }}
+					saisons</h3>
 			</div>
-			<div class="card col-lg-2 bg-dark border border-primary opacity-75 p-2 m-2">
-				<h3 class="card-subtitle text-center">{{ nbEpisodes }} épisodes</h3>
+			<div class="card col-lg-2 bg-dark border border-primary opacity-75 p-2 mx-2">
+				<h3 class="card-subtitle text-center">{{ nbEpisodes }}
+					épisodes</h3>
 			</div>
 		</div>
 
+		<h2 class="mt-5 text-secondary text-center">Nos dernières séries</h2>
+		<div class="row justify-content-center mx-sm-3">
+			{% for program in lastPrograms %}
+				<div class="card col-lg-3 bg-dark border border-primary opacity-75 m-2 p-2">
+					<div class="card-body h-100">
+						<h2 class="card-title text-white text-center">
+							{{ program.title }}</h2>
+						<h3 class="h5 my-3">
+							{{ program.category.name }}</h3>
+						<p class="card-text flex-grow-1">Synopsis :
+							{{ program.synopsis }}</p>
+					</div>
+					<a class="btn btn-primary text-light px-3" href="{{ path('program_show', {'slug': program.slug}) }}">Voir</a>
+				</div>
+			{% endfor %}
+		</div>
 	</main>
 {% endblock %}

@@ -6,7 +6,11 @@
 {% block body %}
 	<main>
 		<h1 class="my-5">{{ program.title }}</h1>
-
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-primary">
+				{{ message }}
+			</div>
+		{% endfor %}
 		<div class="d-flex flex-column align-items-center">
 			<div class="card col-lg-6 bg-dark border border-primary opacity-75 p-2">
 				<h2 class="h5">{{ program.category.name }}</h2>

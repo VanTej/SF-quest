@@ -25,10 +25,10 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'Vous devez accepter les règles.',
+                        'message' => 'Vous devez toujours être en accord avec Vanessa.',
                     ]),
                 ],
-                'label' => 'Règles du site'
+                'label' => 'Je suis d\'accord avec Vanessa'
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,

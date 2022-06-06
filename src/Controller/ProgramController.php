@@ -49,6 +49,9 @@ class ProgramController extends AbstractController
             $program->setSlug($slug);
             $program->setAuthor($user);
             $programRepository->add($program, true);
+
+            $this->addFlash('success', 'Votre série est bien enregistrée !');
+
             $email = (new Email())
                 ->from($this->getParameter('mailer_from'))
                 ->to('your_email@example.com')
@@ -86,6 +89,8 @@ class ProgramController extends AbstractController
             $program->setSlug($slug);
             $program->setAuthor($program->getAuthor());
             $programRepository->add($program, true);
+
+            $this->addFlash('success', 'Votre série est bien modifiée !');
 
             return $this->redirectToRoute('program_index');
         }
@@ -136,7 +141,14 @@ class ProgramController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $commentRepository->add($comment, true);
 
-            return $this->redirectToRoute('program_episode_show', ['programId' => $program->getId(), 'seasonId' => $season->getId(), 'episodeId' => $episode->getId()], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'Votre commentaire est bien publié !');
+
+            return $this->redirectToRoute('program_episode_show', [
+                'programId' => $program->getId(),
+                'seasonId' => $season->getId(),
+                'episodeId' => $episode->getId(),
+            ],
+            Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('program/episode_show.html.twig', [

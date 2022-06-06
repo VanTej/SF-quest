@@ -19,10 +19,12 @@ Class DefaultController extends AbstractController
         $programs = $programRepository->findAll();
         $seasons = $seasonRepository->findAll();
         $episodes = $episodeRepository->findAll();
+        $lastPrograms = $programRepository->findBy([], ['id' => 'DESC'], 3);
         return $this->render('home/index.html.twig', [
             'nbPrograms' => count($programs),
             'nbSeasons' => count($seasons),
             'nbEpisodes' => count($episodes),
+            'lastPrograms' => $lastPrograms
         ]);
     }
 }
