@@ -2,22 +2,24 @@
 
 namespace App\Controller;
 
-use App\Entity\Comment;
 use App\Entity\Season;
+use App\Entity\Comment;
 use App\Entity\Episode;
 use App\Entity\Program;
-use App\Form\CommentType;
 use App\Service\Slugify;
+use App\Form\CommentType;
 use App\Form\ProgramType;
-use App\Repository\CommentRepository;
 use Symfony\Component\Mime\Email;
+use App\Repository\CommentRepository;
 use App\Repository\ProgramRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
@@ -36,13 +38,16 @@ class ProgramController extends AbstractController
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, MailerInterface $mailer, ProgramRepository $programRepository, Slugify $slugify): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_CONTRIBUTOR', null, 'Vous n\'avez pas les droits pour accéder à cette page.');
         $program = new Program();
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = $slugify->generate($program->getTitle());
             $program->setSlug($slug);
+            $program->setAuthor($user);
             $programRepository->add($program, true);
             $email = (new Email())
                 ->from($this->getParameter('mailer_from'))
@@ -59,6 +64,33 @@ class ProgramController extends AbstractController
         }
 
         return $this->renderForm('program/new.html.twig', [
+            'formProgram' => $form,
+        ]);
+    }
+    /**
+     * Require ROLE_CONTRIBUTOR for all the actions of this controller
+     */
+    #[IsGranted('ROLE_CONTRIBUTOR')]
+    #[Route('/{slug}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Program $program, ProgramRepository $programRepository, Slugify $slugify): Response
+    {
+        if (!($this->getUser() == $program->getAuthor()) && !(in_array('ROLE_ADMIN', $this->getUser()->getRoles()))) {
+            throw new AccessDeniedException('Seuls le créateur de cette page et l\'admin peuvent accéder à cette page');
+        }
+        $form = $this->createForm(ProgramType::class, $program);
+        $form->handleRequest($request);
+        $user = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $slug = $slugify->generate($program->getTitle());
+            $program->setSlug($slug);
+            $program->setAuthor($program->getAuthor());
+            $programRepository->add($program, true);
+
+            return $this->redirectToRoute('program_index');
+        }
+
+        return $this->renderForm('program/edit.html.twig', [
             'formProgram' => $form,
         ]);
     }
@@ -114,5 +146,24 @@ class ProgramController extends AbstractController
             'comments' => $comments,
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/comment/{id}', name: 'comment_delete', methods: ['POST'])]
+    #[Entity('comment', options: ['id' => 'id'])]
+    public function deleteComment(Request $request, Comment $comment, CommentRepository $commentRepository): Response
+    {
+        $episode = $comment->getEpisode();
+        $season = $episode->getSeason();
+        $program = $season->getProgram();
+
+        if (!($this->getUser() == $comment->getAuthor()) && !(in_array('ROLE_ADMIN', $this->getUser()->getRoles()))) {
+            throw new AccessDeniedException('Seuls le créateur de ce commentaire et l\'admin peuvent le supprimer');
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $comment->getId(), $request->request->get('_token'))) {
+            $commentRepository->remove($comment, true);
+        }
+
+        return $this->redirectToRoute('program_episode_show', ['programId' => $program->getId(), 'seasonId' => $season->getId(), 'episodeId' => $episode->getId()], Response::HTTP_SEE_OTHER);
     }
 }

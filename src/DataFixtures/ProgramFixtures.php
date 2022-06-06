@@ -17,6 +17,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         ['title' => 'Le jeu de la Dame', 'synopsis' => 'Une joueuse exceptionnelle dans les années 50 parmi les hommes.', 'category' => 'category_Aventure'],
         ['title' => 'Sex education', 'synopsis' => 'Des lycéens anglais découvrent le sexe sans tabou, ou presque !', 'category' => 'category_Comédie'],
     ];
+    const EMAIL = ['contrib@wildseries.com', 'contrib2@wildseries.com', 'admin@wildseries.com'];
 
     public function __construct(private Slugify $slugify)
     {
@@ -31,6 +32,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
             $program->setSlug($slug);
             $program->setSynopsis($serie['synopsis']);
             $program->setCategory($this->getReference($serie['category']));
+            $program->setAuthor($this->getReference(self::EMAIL[rand(0,2)]));
             $this->addReference($serie['title'], $program);
             $manager->persist($program);
         }

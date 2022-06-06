@@ -9,7 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * Require ROLE_CONTRIBUTOR for all the actions of this controller
+ */
+#[IsGranted('ROLE_CONTRIBUTOR')]
 #[Route('/season')]
 class SeasonController extends AbstractController
 {
@@ -51,6 +56,8 @@ class SeasonController extends AbstractController
     #[Route('/{id}/edit', name: 'app_season_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Season $season, SeasonRepository $seasonRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Accès à cette fonction uniquement au ROLE_ADMIN');
+
         $form = $this->createForm(SeasonType::class, $season);
         $form->handleRequest($request);
 
@@ -69,6 +76,8 @@ class SeasonController extends AbstractController
     #[Route('/{id}', name: 'app_season_delete', methods: ['POST'])]
     public function delete(Request $request, Season $season, SeasonRepository $seasonRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Accès à cette fonction uniquement au ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete'.$season->getId(), $request->request->get('_token'))) {
             $seasonRepository->remove($season, true);
         }

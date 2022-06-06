@@ -53,8 +53,10 @@ class Program
     private $actors;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Blank]
-    private $slug;
+    private $slug = '';
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'programs')]
+    private $author;
 
     public function __construct()
     {
@@ -211,6 +213,18 @@ class Program
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

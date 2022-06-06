@@ -33,7 +33,7 @@ class ActorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $actorRepository->add($actor, true);
 
-            return $this->redirectToRoute('actor_index');
+            return $this->redirectToRoute('actor_index',);
         }
 
         return $this->renderForm('actor/new.html.twig', [

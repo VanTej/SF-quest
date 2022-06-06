@@ -1,7 +1,5 @@
 {{ form_start(form) }}
 
-	{{ form_row(form.program, {'attr': {'class': 'd-flex flex-wrap gap-2'}}) }}
-	{{ form_row(form.season, {'attr': {'class': 'd-flex flex-wrap gap-2'}}) }}
     {{ form_widget(form) }}
     <button class="btn btn-primary text-white mt-3">{{button_label|default('Ajouter')}}</button>
 {{ form_end(form) }}

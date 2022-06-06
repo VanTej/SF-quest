@@ -12,7 +12,12 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * Require ROLE_CONTRIBUTOR for all the actions of this controller
+ */
+#[IsGranted('ROLE_CONTRIBUTOR')]
 #[Route('/episode')]
 class EpisodeController extends AbstractController
 {
@@ -65,6 +70,8 @@ class EpisodeController extends AbstractController
     #[Route('/{slug}/edit', name: 'app_episode_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Episode $episode, EpisodeRepository $episodeRepository, Slugify $slugify): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Accès à cette fonction uniquement au ROLE_ADMIN');
+
         $form = $this->createForm(EpisodeType::class, $episode);
         $form->handleRequest($request);
 
@@ -85,7 +92,8 @@ class EpisodeController extends AbstractController
     #[Route('/{id}', name: 'app_episode_delete', methods: ['POST'])]
     public function delete(Request $request, Episode $episode, EpisodeRepository $episodeRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$episode->getId(), $request->request->get('_token'))) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Accès à cette fonction uniquement au ROLE_ADMIN');
+        if ($this->isCsrfTokenValid('delete' . $episode->getId(), $request->request->get('_token'))) {
             $episodeRepository->remove($episode, true);
         }
 

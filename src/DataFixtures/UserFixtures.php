@@ -27,7 +27,20 @@ class UserFixtures extends Fixture
             $passwordContributor
         );
         $contributor->setPassword($hashedPassword);
+        $this->addReference($contributor->getEmail(), $contributor);
         $manager->persist($contributor);
+
+        $contributor2 = new User();
+        $contributor2->setEmail('contrib2@wildseries.com');
+        $contributor2->setRoles(['ROLE_CONTRIBUTOR']);
+        $passwordContributor2 = 'toto';
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $contributor2,
+            $passwordContributor2
+        );
+        $contributor2->setPassword($hashedPassword);
+        $this->addReference($contributor2->getEmail(), $contributor2);
+        $manager->persist($contributor2);
         
         $admin = new User();
         $admin->setEmail('admin@wildseries.com');
@@ -38,6 +51,7 @@ class UserFixtures extends Fixture
             $passwordAdmin
         );
         $admin->setPassword($hashedPassword);
+        $this->addReference($admin->getEmail(), $admin);
         $manager->persist($admin);
 
 

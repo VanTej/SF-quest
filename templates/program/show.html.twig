@@ -7,23 +7,28 @@
 	<main>
 		<h1 class="my-5">{{ program.title }}</h1>
 
-			<div class="d-flex flex-column align-items-center">
-				<div class="card col-lg-6 bg-dark border border-primary opacity-75 p-2">
-					<h2 class="h5">{{ program.category.name }}</h2>
-					<p>Synopsis :
-						{{ program.synopsis }}</p>
-					<div class="d-flex justify-content-center">
-						{% for season in seasons %}
-							<a class="btn btn-secondary text-light px-3 m-3" href="{{ path('program_season_show', {'programId': program.id, 'seasonId': season.id}) }}">Saison
-								{{ season.number }}</a>
-						{% endfor %}
-					</div>
-					<div class="d-flex justify-content-center flex-wrap">
-						{% for actor in actors %}
-							<a class="btn btn-light text-secondary px-3 m-3" href="{{ path('actor_show', {'id': actor.id}) }}">{{ actor.name }}</a>
-						{% endfor %}
-					</div>
+		<div class="d-flex flex-column align-items-center">
+			<div class="card col-lg-6 bg-dark border border-primary opacity-75 p-2">
+				<h2 class="h5">{{ program.category.name }}</h2>
+				<p>Synopsis :
+					{{ program.synopsis }}</p>
+				<div class="d-flex justify-content-center">
+					{% for season in seasons %}
+						<a class="btn btn-secondary text-light px-3 m-3" href="{{ path('program_season_show', {'programId': program.id, 'seasonId': season.id}) }}">Saison
+							{{ season.number }}</a>
+					{% endfor %}
 				</div>
+				<div class="d-flex justify-content-center flex-wrap">
+					{% for actor in actors %}
+						<a class="btn btn-light text-secondary px-3 m-3" href="{{ path('actor_show', {'id': actor.id}) }}">{{ actor.name }}</a>
+					{% endfor %}
+				</div>
+			</div>
+			{% if is_granted('ROLE_CONTRIBUTOR') %}
+				{% if app.user == program.author %}
+					<a class="btn btn-secondary text-white px-3 my-5 fs-6" href="{{ path('program_edit', {'slug': program.slug}) }}">Modifier la série</a>
+				{% endif %}
+			{% endif %}
 
 			<a class="m-5 p-0" href="{{ path('program_index')}}">Retour à la liste des séries</a>
 		</div>

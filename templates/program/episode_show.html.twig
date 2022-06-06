@@ -16,7 +16,7 @@
 				<p>Synopsis :
 					{{ episode.synopsis }}</p>
 			</div>
-			<div class="col-lg-6">
+			<div class="col-lg-6 d-flex flex-column align-items-center">
 				{% if comments is empty %}
 					<h3 class="mt-5 text-center">Aucun commentaire pour cet épisode</h3>
 				{% else %}
@@ -28,10 +28,15 @@
 					{% endif %}
 					<div class="row gap-2 my-3 container d-flex flex-column align-items-center">
 						{% for comment in comments %}
-							<div class="card col-lg-10 bg-dark border border-secondary opacity-75">
+							<div class="card col-lg-8 bg-dark border border-secondary opacity-75">
 								<p class="text-muted p-0 m-0">{{ comment.author }}</p>
 								<p class="card-text p-0">{{ comment.rate}}/5 -
 									{{ comment.comment }}</p>
+								{% if comment.author == app.user %}
+									<div class="col-lg-3">
+										{{ include('comment/_delete_form.html.twig') }}
+									</div>
+								{% endif %}
 							</div>
 						{% endfor %}
 					</div>

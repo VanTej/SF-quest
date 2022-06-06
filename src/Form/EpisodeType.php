@@ -19,31 +19,31 @@ class EpisodeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('program', EntityType::class, [
-                'class' => Program::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('p')
-                        ->orderBy('p.title', 'ASC');
-                },
-                'multiple' => false,
-                'expanded' => true,
-                'by_reference' => false,
-                'choice_label' => 'title',
-                'label' => 'Série',
-            ])
-            ->add('season', EntityType::class, [
-                'class' => Season::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('s')
-                        ->join('s.program', 'p')
-                        ->orderBy('p.title', 'ASC');
-                },
-                'multiple' => false,
-                'expanded' => true,
-                'by_reference' => false,
-                'choice_label' => 'number',
-                'label' => 'Numéro de la saison',
-            ])
+            // ->add('program', EntityType::class, [
+            //     'class' => Program::class,
+            //     'query_builder' => function (EntityRepository $er) {
+            //         return $er->createQueryBuilder('p')
+            //             ->orderBy('p.title', 'ASC');
+            //     },
+            //     'multiple' => false,
+            //     'expanded' => true,
+            //     'by_reference' => false,
+            //     'choice_label' => 'title',
+            //     'label' => 'Série',
+            // ])
+            // ->add('season', EntityType::class, [
+            //     'class' => Season::class,
+            //     'query_builder' => function (EntityRepository $er) {
+            //         return $er->createQueryBuilder('s')
+            //             ->join('s.program', 'p')
+            //             ->orderBy('p.title', 'ASC');
+            //     },
+            //     'multiple' => false,
+            //     'expanded' => true,
+            //     'by_reference' => false,
+            //     'choice_label' => 'number',
+            //     'label' => 'Numéro de la saison',
+            // ])
             ->add('number', IntegerType::class, [
                 'label' => 'Numéro de l\'épisode',
             ])
