@@ -189,6 +189,8 @@ class ProgramController extends AbstractController
             $commentRepository->remove($comment, true);
         }
 
+        $this->addFlash('danger', 'Votre commentaire a été supprimé !');
+
         return $this->redirectToRoute('program_episode_show', ['programId' => $program->getId(), 'seasonId' => $season->getId(), 'episodeId' => $episode->getId()], Response::HTTP_SEE_OTHER);
     }
 }

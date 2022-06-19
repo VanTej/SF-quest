@@ -6,11 +6,6 @@
 {% block body %}
 	<main class="container program">
 		<h1 class="my-5">{{ program.title }}</h1>
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-primary">
-				{{ message }}
-			</div>
-		{% endfor %}
 		<div class="d-flex flex-column align-items-center">
 			<div class="card col-lg-10 bg-dark border border-primary opacity-75">
 				<img src="https://picsum.photos/200/300?random={{program.id}}" class="card-img-top">

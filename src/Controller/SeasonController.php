@@ -36,6 +36,8 @@ class SeasonController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $seasonRepository->add($season, true);
 
+            $this->addFlash('success', 'Votre saison a été ajoutée !');
+            
             return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -64,6 +66,8 @@ class SeasonController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $seasonRepository->add($season, true);
 
+            $this->addFlash('success', 'Votre saison a été modifiée !');
+
             return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -78,9 +82,11 @@ class SeasonController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Accès à cette fonction uniquement au ROLE_ADMIN');
 
-        if ($this->isCsrfTokenValid('delete'.$season->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $season->getId(), $request->request->get('_token'))) {
             $seasonRepository->remove($season, true);
         }
+
+        $this->addFlash('danger', 'Votre saison a été supprimée !');
 
         return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
     }

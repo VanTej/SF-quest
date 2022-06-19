@@ -50,6 +50,8 @@ class EpisodeController extends AbstractController
 
             $mailer->send($email);
 
+            $this->addFlash('success', 'Votre épisode a été ajouté !');
+
             return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -80,6 +82,8 @@ class EpisodeController extends AbstractController
             $episode->setSlug($slug);
             $episodeRepository->add($episode, true);
 
+            $this->addFlash('success', 'Votre épisode a été modifié !');
+
             return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -96,6 +100,8 @@ class EpisodeController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $episode->getId(), $request->request->get('_token'))) {
             $episodeRepository->remove($episode, true);
         }
+
+        $this->addFlash('danger', 'Votre épisode a été supprimé !');
 
         return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);
     }

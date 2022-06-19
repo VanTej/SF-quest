@@ -33,7 +33,7 @@ class Episode
     #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
-    #[ORM\OneToMany(mappedBy: 'episode', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'episode', targetEntity: Comment::class, orphanRemoval: true)]
     #[ORM\OrderBy(["id" => "DESC"])]
     private Collection $comments;
 
