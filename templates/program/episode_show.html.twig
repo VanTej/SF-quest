@@ -37,7 +37,7 @@
 								<p class="text-muted p-0 m-0">{{ comment.author }}</p>
 								<p class="card-text p-0">{{ comment.rate}}/5 -
 									{{ comment.comment }}</p>
-								{% if comment.author == app.user %}
+								{% if comment.author == app.user or is_granted('ROLE_ADMIN')%}
 									<div class="col-lg-3">
 										{{ include('comment/_delete_form.html.twig') }}
 									</div>
