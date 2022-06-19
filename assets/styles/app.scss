@@ -38,4 +38,10 @@ h1 {
     display: none;
 }
 
+.program .card-img-top {
+    object-fit: cover;
+    object-position: center;
+    height: 250px;
+}
+
 @import "~bootstrap/scss/bootstrap";

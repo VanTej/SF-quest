@@ -9,6 +9,7 @@ use App\Entity\Program;
 use App\Service\Slugify;
 use App\Form\CommentType;
 use App\Form\ProgramType;
+use App\Form\SearchProgramType;
 use Symfony\Component\Mime\Email;
 use App\Repository\CommentRepository;
 use App\Repository\ProgramRepository;
@@ -25,13 +26,22 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ProgramController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(ProgramRepository $programRepository): Response
+    public function index(Request $request, ProgramRepository $programRepository): Response
     {
-        $programs = $programRepository->findAll();
+        $form = $this->createForm(SearchProgramType::class);
+        $form->handleRequest($request);
 
-        return $this->render('program/index.html.twig', [
+        if ($form->isSubmitted() && $form->isValid()) {
+            $search = $form->getData()['search'];
+            $programs = $programRepository->search($search);
+        } else {
+            $programs = $programRepository->findAll();
+        }
+
+        return $this->renderForm('program/index.html.twig', [
             'website' => 'Wild Series',
             'programs' => $programs,
+            'form' => $form,
         ]);
     }
 
@@ -143,12 +153,15 @@ class ProgramController extends AbstractController
 
             $this->addFlash('success', 'Votre commentaire est bien publié !');
 
-            return $this->redirectToRoute('program_episode_show', [
-                'programId' => $program->getId(),
-                'seasonId' => $season->getId(),
-                'episodeId' => $episode->getId(),
-            ],
-            Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'program_episode_show',
+                [
+                    'programId' => $program->getId(),
+                    'seasonId' => $season->getId(),
+                    'episodeId' => $episode->getId(),
+                ],
+                Response::HTTP_SEE_OTHER
+            );
         }
 
         return $this->render('program/episode_show.html.twig', [

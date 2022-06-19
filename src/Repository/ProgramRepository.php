@@ -44,14 +44,13 @@ class ProgramRepository extends ServiceEntityRepository
      */
     public function search($query): array
     {
-        if(empty($query)) {
-            return [];
-        }
         return $this->createQueryBuilder('p')
+            ->innerjoin('p.actors', 'a')
             ->andWhere('p.title LIKE :q')
             ->orWhere('p.synopsis LIKE :q')
+            ->orWhere('a.name LIKE :q')
             ->setParameter('q', '%' . $query . '%')
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('p.title', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
