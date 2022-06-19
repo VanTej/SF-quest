@@ -21,22 +21,27 @@
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('actor_index') }}">Acteurs</a>
 				</li>
+				{% if app.user %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('program_favorites') }}">Séries favories</a>
+					</li>
+				{% endif %}
 			</ul>
 
 			{# <form class="d-flex" role="search">
-					<input id="input-dark" class="form-control me-2" type="search" placeholder="Recherche" aria-label="Search">
-					<button class="btn btn-outline-success text-primary" type="submit">GO</button>
-				</form> #}
+								<input id="input-dark" class="form-control me-2" type="search" placeholder="Recherche" aria-label="Search">
+								<button class="btn btn-outline-success text-primary" type="submit">GO</button>
+							</form> #}
 		</div>
-			<div class="justify-self-end">
-				{% if app.user %}
+		<div class="justify-self-end">
+			{% if app.user %}
 				<span class="align-middle me-2">
 					{{ app.user.email }}
 				</span>
-					<a class="btn btn-primary text-white" href="{{ path('app_logout') }}">Se déconnecter</a>
-				{% else %}
-					<a class="btn btn-primary text-white" href="{{ path('login') }}">Se connecter</a>
-				{% endif %}
-			</div>
+				<a class="btn btn-primary text-white" href="{{ path('app_logout') }}">Se déconnecter</a>
+			{% else %}
+				<a class="btn btn-primary text-white" href="{{ path('login') }}">Se connecter</a>
+			{% endif %}
+		</div>
 	</div>
 </nav>

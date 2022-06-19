@@ -13,6 +13,8 @@ use App\Form\SearchProgramType;
 use Symfony\Component\Mime\Email;
 use App\Repository\CommentRepository;
 use App\Repository\ProgramRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,6 +44,16 @@ class ProgramController extends AbstractController
             'website' => 'Wild Series',
             'programs' => $programs,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/favorites', name: 'favorites')]
+    public function favorites(): Response
+    {
+        $programs = $this->getUser()->getWatchlist();
+
+        return $this->render('program/favorites.html.twig', [
+            'programs' => $programs,
         ]);
     }
 
@@ -192,5 +204,25 @@ class ProgramController extends AbstractController
         $this->addFlash('danger', 'Votre commentaire a été supprimé !');
 
         return $this->redirectToRoute('program_episode_show', ['programId' => $program->getId(), 'seasonId' => $season->getId(), 'episodeId' => $episode->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/program/{id}/watchlist', name: 'watchlist', methods: ['GET', 'POST'])]
+    public function addToWatchlist(Program $program, EntityManagerInterface $manager): Response
+    {
+        if (!$this->getUser()->isInWatchlist($program)) {
+            $this->getUser()->addToWatchlist($program);
+        } else {
+            $this->getUser()->removeFromWatchlist($program);
+        }
+
+        $manager->flush();
+
+        return $this->redirectToRoute(
+            'program_show',
+            [
+                'slug' => $program->getSlug(),
+            ],
+            Response::HTTP_SEE_OTHER
+        );
     }
 }

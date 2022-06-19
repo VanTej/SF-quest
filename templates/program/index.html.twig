@@ -20,8 +20,15 @@
 					<div class="card col-lg-5 bg-dark border border-primary opacity-75 p-0">
 						<img src="https://picsum.photos/200/300?random={{program.id}}" class="card-img-top">
 						<div class="card-body h-100">
-							<h2 class="card-title text-white text-center">
-								{{ program.title }}</h2>
+							<div class="d-flex justify-content-between">
+								<h2 class="card-title text-white text-center">
+									{{ program.title }}</h2>
+								{% if app.user %}
+									<a href="{{ path('program_watchlist', {id: program.id})}}">
+										<i class="bi {{ app.user.isInWatchlist(program) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+									</a>
+								{% endif %}
+							</div>
 							<h3 class="h5 my-3">
 								{{ program.category.name }}</h3>
 							<p class="card-text flex-grow-1">Synopsis :
