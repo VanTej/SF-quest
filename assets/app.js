@@ -12,10 +12,17 @@ formShow.addEventListener('click', () => {
     formHidden.classList.remove('hidden');
 });
 
+// start the Stimulus application
+import './bootstrap';
+
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css'; 
 
-// start the Stimulus application
-import './bootstrap';
+import 'bootstrap';
+
+const $ = require('jquery');
 require('bootstrap');
+$(document).ready(function() {
+    $('[data-toggle="popover"]').popover();
+});

@@ -14,24 +14,21 @@ $theme-colors: (
     "light": $light,
 );
 
+@import "~bootstrap/scss/bootstrap";
+
+
 body {
-    background: url('../images/bg-texture.jpg');
+    background: url("../images/bg-texture.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
-
 
 h1 {
     text-align: center;
 }
 
 .navbar img {
-    height: 50px;;
-}
-
-.navbar-toggler {
-    background-color: $primary;
-    fill: $dark;
+    height: 50px;
 }
 
 .hidden {
@@ -43,5 +40,3 @@ h1 {
     object-position: center;
     height: 250px;
 }
-
-@import "~bootstrap/scss/bootstrap";

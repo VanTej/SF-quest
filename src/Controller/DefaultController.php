@@ -5,12 +5,13 @@ namespace App\Controller;
 use App\Repository\SeasonRepository;
 use App\Repository\EpisodeRepository;
 use App\Repository\ProgramRepository;
+use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-Class DefaultController extends AbstractController
+class DefaultController extends AbstractController
 
 {
     #[Route('/', name: 'app_index')]
@@ -25,6 +26,13 @@ Class DefaultController extends AbstractController
             'nbSeasons' => count($seasons),
             'nbEpisodes' => count($episodes),
             'lastPrograms' => $lastPrograms
+        ]);
+    }
+
+    public function navbarTop(CategoryRepository $categoryRepository): Response
+    {
+        return $this->render('includes/_navbartop.html.twig', [
+            'categories' => $categoryRepository->findBy([], ['id' => 'DESC'])
         ]);
     }
 }
